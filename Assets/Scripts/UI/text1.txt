@@ -1,0 +1,8 @@
+A
+hi
+B
+hello
+A
+nice to meet you
+B
+nice to meet you too
