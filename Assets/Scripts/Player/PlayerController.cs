@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("check")]
     bool isFacingRight;
-    bool jumpHold;  //������Ծ
+    bool jumpHold;  
     bool canMove;
     bool isOnGround;
 
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float downRecoilForce;
     [SerializeField] float recoilForce;
     float lastSlash;
-
+    PlayerBag bag;
 
     // Start is called before the first frame update
     void Start()
@@ -45,12 +45,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider2D>();
+        bag = GetComponent<PlayerBag>();
         canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        bag.OpenMyBag();
         Movenment();
         Flip();
         Jump();
@@ -84,11 +86,6 @@ public class PlayerController : MonoBehaviour
         else
             movement = 0;
         animator.SetInteger("movement", movement);
-    }
-    void JumpCancle()
-    {
-        jumpTime = 1f;
-        animator.ResetTrigger("jump");
     }
     void Flip()
     {

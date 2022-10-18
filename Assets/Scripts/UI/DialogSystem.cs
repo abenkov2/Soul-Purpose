@@ -2,19 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 public class DialogSystem : MonoBehaviour
 {
     [Header("UI")]
-    public TextMeshProUGUI content;
-    public TextMeshProUGUI name;
+    public Text content;
+    public Text name;
     [Header("file")]
     public TextAsset file;
     public int index;
 
     List<string> textList = new List<string>();
     List<string> nameList = new List<string>();
+    private void OnEnable()
+    {
+        name.text = nameList[index];
+        content.text = textList[index++];
+    }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         getTextFormFile(file);
         index = 0;
