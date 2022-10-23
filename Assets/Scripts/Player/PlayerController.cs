@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
     [Header("moveParam")]
     [SerializeField] float hurtForce = 1f;
     [SerializeField] float jumpTime = 1f;
-    [SerializeField] float fallAddition = 2.5f; 
-    [SerializeField] float jumpAddition = 1.5f; 
+    [SerializeField] float fallAddition = 2.5f;
+    [SerializeField] float jumpAddition = 1.5f;
     [SerializeField] float speed = 2f;
     [SerializeField] float jumpForce = 20f;
     [SerializeField] float extraHeight = 0.02f;
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("check")]
     bool isFacingRight;
-    bool jumpHold;  
+    bool jumpHold;
     bool canMove;
     bool isOnGround;
 
@@ -28,15 +28,6 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Rigidbody2D rb;
 
-
-    [Header("attackParam")]
-    [SerializeField] float slashIntervalTime = 0.2f; 
-    [SerializeField] int slashCount = 0;
-    [SerializeField] float lastComboTime = 0.4f;
-    [SerializeField] int slashDamage = 1;
-    [SerializeField] float downRecoilForce;
-    [SerializeField] float recoilForce;
-    float lastSlash;
     PlayerBag bag;
 
     // Start is called before the first frame update
@@ -95,7 +86,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (moveX < 0)
         {
-            transform.localScale = new Vector3(-1,1,1);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
     void Jump()
@@ -110,16 +101,16 @@ public class PlayerController : MonoBehaviour
     }
     void IsOnGround()
     {
-        isOnGround = collider.IsTouchingLayers(groundLayerMask); 
+        isOnGround = collider.IsTouchingLayers(groundLayerMask);
         animator.SetBool("isOnGround", isOnGround);
     }
     void JumpOptimize()
     {
-        if (rb.velocity.y < 0)   
+        if (rb.velocity.y < 0)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * fallAddition * Time.deltaTime;
         }
-        else if (rb.velocity.y > 0 && !jumpHold) 
+        else if (rb.velocity.y > 0 && !jumpHold)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * jumpAddition * Time.deltaTime;
         }

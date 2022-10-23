@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ItemOnWorld : MonoBehaviour
 {
     public Item thisItem;
-    public Inventory playerInventory;
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.name == "Player")
@@ -17,9 +14,9 @@ public class ItemOnWorld : MonoBehaviour
     }
     public void AddNewItem()
     {
-        if (!playerInventory.ItemList.Contains(thisItem))
+        if (!InventoryManager.instance.myBag.ItemList.Contains(thisItem))
         {
-            playerInventory.ItemList.Add(thisItem);
+            InventoryManager.instance.myBag.ItemList.Add(thisItem);
         }
         else
         {
@@ -27,5 +24,16 @@ public class ItemOnWorld : MonoBehaviour
         }
         InventoryManager.ReFreshItem();
     }
-
+    public void AddNewItem(Item newItem)
+    {
+        if (!InventoryManager.instance.myBag.ItemList.Contains(newItem))
+        {
+            InventoryManager.instance.myBag.ItemList.Add(newItem);
+        }
+        else
+        {
+            newItem.itemNum++;
+        }
+        InventoryManager.ReFreshItem();
+    }
 }

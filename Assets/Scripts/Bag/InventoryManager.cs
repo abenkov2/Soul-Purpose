@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InventoryManager : MonoBehaviour
 {
-    static InventoryManager instance;
+    public static InventoryManager instance;
 
-    public Inventory myBag;
+    public Inventory myBag ;
     public GameObject slotGrid;
     public Slot slotPrefab;
     public Text itemInfo;
+
+    Chest chest;
     private void Awake()
     {
-        if(instance != null)
+        chest = FindObjectOfType<Chest>();
+        if (instance != null)
             Destroy(this);
         instance = this;
     }
@@ -45,6 +49,25 @@ public class InventoryManager : MonoBehaviour
         {
             if (instance.myBag.ItemList[i].itemNum > 0)
                 CreateNewItem(instance.myBag.ItemList[i]);
+            else
+                UpdateItemInfo("");
         }
+    }
+    public void UseOnClicked()
+    {
+        for (int i = 0; i < myBag.ItemList.Count; i++)
+        {
+            if (myBag.ItemList[i].itemNum > 0 && myBag.ItemList[i].itemName == Slot.lastItemName)
+            {
+                EventManager(myBag.ItemList[i]);
+                myBag.ItemList[i].itemNum--;
+                break;
+            }
+        }
+        InventoryManager.ReFreshItem();
+    }
+    void EventManager(Item curItem)
+    {
+        chest.ChestEvent(Slot.lastItemName, curItem);
     }
 }

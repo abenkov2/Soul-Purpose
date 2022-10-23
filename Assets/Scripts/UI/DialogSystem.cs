@@ -10,49 +10,56 @@ public class DialogSystem : MonoBehaviour
     public Text name;
     [Header("file")]
     public TextAsset file;
-    public int index;
+    public int curDialogIndex;
+    bool isDialogOver;
 
     List<string> textList = new List<string>();
     List<string> nameList = new List<string>();
     private void OnEnable()
     {
-        name.text = nameList[index];
-        content.text = textList[index++];
+        name.text = nameList[curDialogIndex];
+        content.text = textList[curDialogIndex++];
     }
     // Start is called before the first frame update
     void Awake()
     {
         getTextFormFile(file);
-        index = 0;
+        curDialogIndex = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && index < textList.Count)
+        //dialog click and continue
+        if (Input.GetKeyDown(KeyCode.R) && curDialogIndex < textList.Count)
         {
-            name.text = nameList[index];
-            content.text = textList[index++];
+            name.text = nameList[curDialogIndex];
+            content.text = textList[curDialogIndex++];
         }
-        if(index >= textList.Count)
+        if(curDialogIndex >= textList.Count)
         {
-            index = 0;
+            isDialogOver = true;
+            curDialogIndex = 0;
         }
     }
+    /// <summary>
+    /// Save dialog file into nameList and textList
+    /// </summary>
+    /// <param name="file"></param>
     void getTextFormFile(TextAsset file)
     {
         textList.Clear();
 
         var lineDate = file.text.Split('\n');
-        for(index = 0; index < lineDate.Length; index++)
+        for(int i = 0; i < lineDate.Length; i++)
         {
-            if(index % 2 == 0)
+            if(i % 2 == 0)
             {
-                nameList.Add(lineDate[index]);
+                nameList.Add(lineDate[i]);
             }
             else
             {
-                textList.Add(lineDate[index]);
+                textList.Add(lineDate[i]);
             }
         }
     }
