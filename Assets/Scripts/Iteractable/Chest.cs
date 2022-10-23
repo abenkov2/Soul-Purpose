@@ -1,13 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Chest : MonoBehaviour
+using System.Linq;
+public class Chest : Interactable
 {
-    public List<string> presetKeyList;
-    List<string> usedKeys = new List<string>();
-    List<Item> tempKeyList = new List<Item>();
-    bool isChestOpen;
+    public enum chestStatus
+    {
+        close,
+        isOpening,
+        opened
+    }
+    public static chestStatus chestCurStatus;
+    public List<GameObject> keyList;
+    public List<Item> rewardList;
+
+    public bool isCollectedAllKeys;
+
+
+    public List<string> presetKeyList = new List<string>();
+    public List<string> usedKeys = new List<string>();
+    public List<Item> tempKeyList = new List<Item>();
     Animator animator;
 
     ItemOnWorld itemOnWorld;
@@ -15,6 +27,23 @@ public class Chest : MonoBehaviour
     {
         itemOnWorld = FindObjectOfType<ItemOnWorld>();
         animator = GetComponent<Animator>();
+        SetPresetKeyList();
+        chestCurStatus = chestStatus.close;
+    }
+    private void Update()
+    {
+        TipTextManager();
+        if(trigger && chestCurStatus == chestStatus.close && Input.GetKey(KeyCode.E))
+        {
+            if (CollectedAllKeys())
+            {
+                StartCoroutine(startChestPuzzle());
+            }
+            else
+            {
+                SetTipText("You haven't found all keys");
+            }
+        }
     }
     public void ChestEvent(string itemName,Item usedKey)
     {
@@ -24,18 +53,35 @@ public class Chest : MonoBehaviour
             tempKeyList.Add(usedKey);
             if (usedKeys.Count == presetKeyList.Count)
             {
+                //open chest in order
                 if (isSameList(usedKeys, presetKeyList))
                 {
-                    isChestOpen = true;
                     OpenChest();
                 }
+                //not open chest in order
                 else
                 {
-                    isChestOpen = false;
                     ResetBag();
                 }
             }
         }
+    }
+    public void DestroyReward()
+    {
+        foreach (var reward in rewardList)
+            InventoryManager.DestroyItem(reward);
+    }
+    public bool CollectedAllKeys()
+    {
+        List<string> bagNameList = new List<string>();
+        foreach (var i in InventoryManager.instance.myBag.ItemList)
+        {
+            bagNameList.Add(i.itemName);
+        }
+        //using System.Linq and Get intersection and judge is same
+        
+        isCollectedAllKeys = (Intersect(bagNameList, presetKeyList).Count == presetKeyList.Count);
+        return isCollectedAllKeys;
     }
     bool isSameList(List<string> a, List<string> b)
     {
@@ -46,19 +92,51 @@ public class Chest : MonoBehaviour
         }
         return true;
     }
+    List<string> Intersect(List<string> a, List<string>b)
+    {
+        List<string> outCome = new List<string>();
+        foreach(var i in a)
+        {
+            if(b.Contains(i)) outCome.Add(i);
+        }
+        return outCome;
+    }
     void ResetBag()
     {
         foreach (var item in tempKeyList)
+        {
             itemOnWorld.AddNewItem(item);
+        }
+            
         tempKeyList.Clear();
         usedKeys.Clear();
     }
     void OpenChest()
     {
         animator.Play("OpenChest");
+        chestCurStatus = chestStatus.opened;
+        PlayerBag.Instance.CloseMyBag();
+        SetTipText("Chest is opened");
+        //GainReward
+        foreach (var reward in rewardList)
+        {
+            itemOnWorld.AddNewItem(reward);
+        }
     }
-    void CloseChest()
+    void SetPresetKeyList()
     {
-        animator.Play("CloseChest");
+        presetKeyList.Clear();
+        foreach(var i in keyList)
+        {
+            presetKeyList.Add(i.name);
+        }
+    }
+    
+    IEnumerator startChestPuzzle()
+    {
+        chestCurStatus = chestStatus.isOpening;
+        SetTipText("Please open bag and use the keys in order");
+        PlayerBag.Instance.OpenMyBag();
+        yield return new WaitForSeconds(0.1f);
     }
 }

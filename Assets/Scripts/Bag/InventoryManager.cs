@@ -38,6 +38,18 @@ public class InventoryManager : MonoBehaviour
         newItem.slotImage.sprite = item.itemImage;
         newItem.slotNum.text = item.itemNum.ToString();
     }
+    public static void DestroyItem(Item item)
+    {
+        for (int i = 0; i < instance.slotGrid.transform.childCount; i++)
+        {
+            GameObject gameObject = instance.slotGrid.transform.GetChild(i).gameObject;
+            if(gameObject.name == item.itemName)
+            {
+                Destroy(gameObject);
+                break;
+            }
+        }
+    }
     public static void ReFreshItem()
     {
         for(int i = 0; i < instance.slotGrid.transform.childCount; i++)
@@ -48,9 +60,21 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < instance.myBag.ItemList.Count; i++)
         {
             if (instance.myBag.ItemList[i].itemNum > 0)
+            {
                 CreateNewItem(instance.myBag.ItemList[i]);
+            }
             else
+            {
                 UpdateItemInfo("");
+            }
+        }
+        for (int i = 0; i < instance.myBag.ItemList.Count; i++)
+        {
+
+            if (instance.myBag.ItemList[i].itemNum <= 0)
+            {
+                instance.myBag.ItemList.Remove(instance.myBag.ItemList[i]);
+            }
         }
     }
     public void UseOnClicked()
@@ -60,14 +84,25 @@ public class InventoryManager : MonoBehaviour
             if (myBag.ItemList[i].itemNum > 0 && myBag.ItemList[i].itemName == Slot.lastItemName)
             {
                 EventManager(myBag.ItemList[i]);
-                myBag.ItemList[i].itemNum--;
+                InventoryManager.ReFreshItem();
                 break;
             }
         }
-        InventoryManager.ReFreshItem();
     }
     void EventManager(Item curItem)
     {
-        chest.ChestEvent(Slot.lastItemName, curItem);
+        //chest event
+        if(Chest.chestCurStatus == Chest.chestStatus.isOpening)
+        {
+            chest.ChestEvent(Slot.lastItemName, curItem);
+            curItem.itemNum--;
+        }
+    }
+    public void ClearInventory()
+    {
+        foreach(var item in myBag.ItemList)
+        {
+            item.itemNum = 0;
+        }
     }
 }

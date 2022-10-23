@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScenes.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/OrangeGhost/OrangeGhostStart.unity
+    guid: 0ef97c78595e1bb4fb6df123e6d71343
+  - enabled: 1
+    path: Assets/Scenes/OrangeGhost/OrangeGhostOver.unity
+    guid: 0df9c49b9baf62a4fae7597955582162
   m_configObjects: {}

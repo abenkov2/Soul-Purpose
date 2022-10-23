@@ -17,10 +17,11 @@ public class ItemOnWorld : MonoBehaviour
         if (!InventoryManager.instance.myBag.ItemList.Contains(thisItem))
         {
             InventoryManager.instance.myBag.ItemList.Add(thisItem);
+            thisItem.itemNum = 1;
         }
         else
         {
-            thisItem.itemNum++;
+            thisItem.itemNum ++;
         }
         InventoryManager.ReFreshItem();
     }
@@ -29,11 +30,13 @@ public class ItemOnWorld : MonoBehaviour
         if (!InventoryManager.instance.myBag.ItemList.Contains(newItem))
         {
             InventoryManager.instance.myBag.ItemList.Add(newItem);
+            newItem.itemNum = 1;
         }
         else
         {
-            newItem.itemNum++;
+            newItem.itemNum ++;
         }
         InventoryManager.ReFreshItem();
     }
+
 }
