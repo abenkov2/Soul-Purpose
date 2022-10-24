@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movenment();
+        Movement();
         Flip();
         Jump();
         IsOnGround();
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         JumpOptimize();
     }
 
-    void Movenment()
+    void Movement()
     {
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
             movement = 0;
         animator.SetInteger("movement", movement);
     }
-    void JumpCancle()
+    void JumpCancel()
     {
         jumpTime = 1f;
         animator.ResetTrigger("jump");
