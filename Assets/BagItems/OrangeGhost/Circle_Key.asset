@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Circle_Key
   itemImage: {fileID: 21300000, guid: 135e4ca8889051e4b8954fc0320624d9, type: 3}
-  itemNum: 1
+  itemNum: 0
   itemInfo: Circle_Key
   Equip: 0

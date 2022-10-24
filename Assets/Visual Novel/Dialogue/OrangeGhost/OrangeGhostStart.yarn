@@ -4,7 +4,7 @@ tags:
 As MOSS makes his way through the forest, the colours start to change from melancholy blue to a rich purple. MOSS hears an OrangeGhost muttering to itself. 
 <<Act OrangeGhost Orange_Ghost left center>>
 OrangeGhost: “Oh my treasure…my treasure….where is it?”
-<<Act MOSS Moss_Text_Box right center>>
+<<Act MOSS Moss_Png_Face_Forward_With_Staff_2 right center>>
 MOSS approaches.
 
 MOSS: “Do you need help, friend?”

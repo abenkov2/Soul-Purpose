@@ -4,12 +4,34 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MenuButtonController : MonoBehaviour
 {
-    [SerializeField] Animator mainMenuScreen;
-    [SerializeField] Animator start;
-    [SerializeField] Animator quit;
+    public Animator mainMenuScreen;
+    public Animator start;
+
     public void StartGame()
     {
         StartCoroutine(DelayDisplayOpening());
+    }
+    public void settingButton()
+    {
+        StartCoroutine(DelayDisplaysetting());
+    }
+    public void ExitButton()
+    {
+        StartCoroutine(DelayDisplayExit());
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    IEnumerator DelayDisplaysetting()
+    {
+        mainMenuScreen.Play("SettingFadeIn");
+        yield return new WaitForSeconds(0.2f);
+    }
+    IEnumerator DelayDisplayExit()
+    {
+        mainMenuScreen.Play("SettingFadeOut");
+        yield return new WaitForSeconds(0.2f);
     }
     IEnumerator DelayDisplayOpening()
     {
@@ -22,8 +44,6 @@ public class MenuButtonController : MonoBehaviour
         mainMenuScreen.Play("FadeOut");
         yield return new WaitForSeconds(0.2f);
     }
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+    
+
 }

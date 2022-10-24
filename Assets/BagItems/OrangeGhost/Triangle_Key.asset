@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Triangle_Key
   itemImage: {fileID: 21300000, guid: b5fbd3b1894bfa14187d665fc25bcc8a, type: 3}
-  itemNum: 1
+  itemNum: 0
   itemInfo: Triangle Key
   Equip: 0

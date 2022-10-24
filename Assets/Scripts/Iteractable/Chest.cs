@@ -16,7 +16,6 @@ public class Chest : Interactable
 
     public bool isCollectedAllKeys;
 
-
     public List<string> presetKeyList = new List<string>();
     public List<string> usedKeys = new List<string>();
     public List<Item> tempKeyList = new List<Item>();
@@ -33,15 +32,24 @@ public class Chest : Interactable
     private void Update()
     {
         TipTextManager();
-        if(trigger && chestCurStatus == chestStatus.close && Input.GetKey(KeyCode.E))
+        CollectedAllKeys();
+        if (trigger && (chestCurStatus == chestStatus.close || chestCurStatus == chestStatus.isOpening) && Input.GetKey(KeyCode.E))
         {
-            if (CollectedAllKeys())
+            chestCurStatus = chestStatus.isOpening;
+            if (isCollectedAllKeys)
             {
                 StartCoroutine(startChestPuzzle());
             }
             else
             {
                 SetTipText("You haven't found all keys");
+            }
+        }
+        if(chestCurStatus == chestStatus.isOpening && trigger)
+        {
+            if (isCollectedAllKeys)
+            {
+                SetTipText("Please open bag and use the keys in order");
             }
         }
     }
@@ -79,7 +87,6 @@ public class Chest : Interactable
             bagNameList.Add(i.itemName);
         }
         //using System.Linq and Get intersection and judge is same
-        
         isCollectedAllKeys = (Intersect(bagNameList, presetKeyList).Count == presetKeyList.Count);
         return isCollectedAllKeys;
     }
@@ -134,7 +141,6 @@ public class Chest : Interactable
     
     IEnumerator startChestPuzzle()
     {
-        chestCurStatus = chestStatus.isOpening;
         SetTipText("Please open bag and use the keys in order");
         PlayerBag.Instance.OpenMyBag();
         yield return new WaitForSeconds(0.1f);
